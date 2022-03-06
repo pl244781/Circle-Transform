@@ -19,17 +19,18 @@ matrix = cv.getPerspectiveTransform(pts1, pts2)
 result = cv.warpPerspective(img, matrix, (x + 1050, y + 2500))
 
 gray = cv.cvtColor(result, cv.COLOR_BGR2GRAY)
-blur = cv.medianBlur(gray, 5)
+blur = cv.bilateralFilter(gray,50,100,75)
 
-'''circles = cv.HoughCircles(blur, cv.HOUGH_GRADIENT, 2, 10)
+circles = cv.HoughCircles(blur, cv.HOUGH_GRADIENT, 1, 7, param1=15, param2=38, minRadius=175, maxRadius=254)
+
 if circles is not None:
     circles = np.round(circles[0, :]).astype("int")
     x, y, r = circles[0][0], circles[0][1], circles[0][2]
     cv.circle(result, (x, y), r, (0, 255, 0), 10)
-    cv.circle(result, (x, y), 5, (0, 255, 0), -1)'''
+    cv.circle(result, (x, y), 5, (0, 255, 0), -1)
 
-matrix = cv.getPerspectiveTransform(pts2, pts1)
-result = cv.warpPerspective(img, matrix, (x, y))
+ret, matrix = cv.invert(matrix)
+result = cv.warpPerspective(result, matrix, (x, y))
 
 cv.imshow('warp', result)
 
