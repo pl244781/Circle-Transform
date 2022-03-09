@@ -19,9 +19,9 @@ matrix = cv.getPerspectiveTransform(pts1, pts2)
 result = cv.warpPerspective(img, matrix, (x + 1050, y + 2500))
 
 gray = cv.cvtColor(result, cv.COLOR_BGR2GRAY)
-blur = cv.bilateralFilter(gray,50,100,75)
+blur = cv.blur(gray, (20,20))
 
-circles = cv.HoughCircles(blur, cv.HOUGH_GRADIENT, 1, 7, param1=15, param2=38, minRadius=175, maxRadius=254)
+circles = cv.HoughCircles(blur, cv.HOUGH_GRADIENT, 1, 9, param1=12, param2=35, minRadius=245, maxRadius=250)
 
 if circles is not None:
     circles = np.round(circles[0, :]).astype("int")
